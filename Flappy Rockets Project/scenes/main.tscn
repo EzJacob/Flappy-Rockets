@@ -1,0 +1,90 @@
+[gd_scene load_steps=13 format=3 uid="uid://bnnatvmhccick"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_0t56f"]
+[ext_resource type="PackedScene" uid="uid://dd50xtr4o7m6b" path="res://scenes/pipe.tscn" id="2_3slus"]
+[ext_resource type="Texture2D" uid="uid://cnaxd2hjcv1y7" path="res://assets/finalNight.PNG" id="3_4t65n"]
+[ext_resource type="PackedScene" uid="uid://d2qpskumib7u0" path="res://scenes/bird.tscn" id="3_y8cjk"]
+[ext_resource type="PackedScene" uid="uid://4ecexrskc706" path="res://scenes/ground.tscn" id="4_w7a33"]
+[ext_resource type="PackedScene" uid="uid://bxm1wln8ysogr" path="res://scenes/game_over.tscn" id="6_skgf6"]
+[ext_resource type="AudioStream" uid="uid://1nsi5n70xsf1" path="res://sounds/coin_2-89099.mp3" id="7_vf4ex"]
+[ext_resource type="AudioStream" uid="uid://cwilp16ygu3eq" path="res://sounds/roblox-death-sound_ytkBL7X.mp3" id="8_w48kf"]
+[ext_resource type="PackedScene" uid="uid://cxisuiq0s4x8p" path="res://scenes/bullet.tscn" id="9_42pxv"]
+[ext_resource type="AudioStream" uid="uid://4dku7b8qh5kr" path="res://sounds/bad-explosion-6855.mp3" id="9_qh13c"]
+[ext_resource type="AudioStream" uid="uid://xlivadbste7y" path="res://sounds/weapon-gun-pickup-sound-half-life-counter-strike.mp3" id="10_bbmh1"]
+[ext_resource type="PackedScene" uid="uid://dx6dougwcbnvy" path="res://scenes/ammo.tscn" id="10_y2hyu"]
+
+[node name="Main" type="Node"]
+script = ExtResource("1_0t56f")
+pipe_scene = ExtResource("2_3slus")
+
+[node name="Backgroound" type="Sprite2D" parent="."]
+position = Vector2(-434.514, -491.714)
+scale = Vector2(2.00698, 2.28571)
+texture = ExtResource("3_4t65n")
+offset = Vector2(432, 384)
+
+[node name="Bird" parent="." instance=ExtResource("3_y8cjk")]
+
+[node name="Ground" parent="." instance=ExtResource("4_w7a33")]
+z_index = 1
+
+[node name="PipeTimer" type="Timer" parent="."]
+wait_time = 1.5
+
+[node name="ScoreLabel" type="Label" parent="."]
+z_index = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -34.5
+offset_right = 34.5
+offset_bottom = 26.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 40
+text = "SCORE: 0"
+
+[node name="AmmoLabel" type="Label" parent="."]
+z_index = 1
+offset_left = 4.0
+offset_right = 184.0
+offset_bottom = 58.0
+theme_override_font_sizes/font_size = 40
+text = "AMMO : 0"
+
+[node name="RulesLabel" type="Label" parent="."]
+z_index = 1
+offset_left = 97.0
+offset_top = 132.0
+offset_right = 772.0
+offset_bottom = 267.0
+theme_override_font_sizes/font_size = 30
+text = "FLYING: 'SPACE'
+
+SHOOTING: 'ENTER', 'S', 'LEFT MOUSE BUTTON'"
+horizontal_alignment = 1
+
+[node name="GameOver" parent="." instance=ExtResource("6_skgf6")]
+
+[node name="CoinSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_vf4ex")
+volume_db = -20.0
+
+[node name="DeathSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_w48kf")
+volume_db = -15.0
+
+[node name="ShootSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_qh13c")
+volume_db = -30.0
+
+[node name="AmmoSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_bbmh1")
+volume_db = -20.0
+
+[node name="Bullet" parent="." instance=ExtResource("9_42pxv")]
+
+[node name="Ammo" parent="." instance=ExtResource("10_y2hyu")]
+
+[connection signal="hit" from="Ground" to="." method="_on_ground_hit"]
+[connection signal="timeout" from="PipeTimer" to="." method="_on_pipe_timer_timeout"]
+[connection signal="restart" from="GameOver" to="." method="_on_game_over_restart"]

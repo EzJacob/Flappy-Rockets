@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://dx6dougwcbnvy"]
+
+[ext_resource type="Script" path="res://scripts/Ammo.gd" id="1_jnmfw"]
+[ext_resource type="Texture2D" uid="uid://4l24cqiofr5t" path="res://assets/guns.png" id="2_7ukln"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_an0tt"]
+size = Vector2(32, 10)
+
+[node name="Ammo" type="Area2D"]
+z_index = 1
+script = ExtResource("1_jnmfw")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("2_7ukln")
+region_enabled = true
+region_rect = Rect2(83, 68, 21, 7)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_an0tt")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
